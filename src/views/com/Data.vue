@@ -18,7 +18,7 @@
           />
           <v-btn
             color="secondary"
-            @click="find()"
+            @click="dataFind()"
           >
             <v-icon class="pr-2">
               mdi-magnify
@@ -68,9 +68,7 @@
 
 import { dialog } from '@electron/remote'
 import fs from 'fs'
-import Database from 'better-sqlite3'
-
-const db = new Database('./src/utils/data.db', { verbose: console.log })
+import { db } from '@/utils/db'
 
 export default {
   data () {
@@ -80,7 +78,7 @@ export default {
         { value: 'row_num', text: 'No' },
         { value: 'table_name', text: '테이블' },
         { value: 'import_cnt', text: '임포트 건수' },
-        { value: 'last_importe_date', text: '최근임포트 일시' },
+        { value: 'last_import_date', text: '최근임포트 일시' },
         { value: 'added_cnt', text: '추가된 건수' },
         { value: 'last_update_date', text: '최근수정 일시' }
       ],
@@ -113,7 +111,7 @@ export default {
     }
   }
   // mounted () {
-  //   const db = new Database('foobar.db', { verbose: console.log })
+  //   const db = new Database('data.db', { verbose: console.log })
   //   const insert = db.prepare('insert into user(user_id, user_name) values(@user_id, @user_name)')
   //   const insertMany = db.transaction((users) => {
   //     for (const user of users) insert.run(user)
