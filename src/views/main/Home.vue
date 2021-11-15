@@ -25,7 +25,10 @@
                     class="text-h3 font-weight-black"
                     v-text="avg || '—'"
                   />
-                  <strong v-if="avg" class="pl-2">%</strong>
+                  <strong
+                    v-if="avg"
+                    class="pl-2"
+                  >%</strong>
                 </div>
               </v-row>
 
