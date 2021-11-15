@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col
-        v-for="i in 20"
+        v-for="i in 120"
         :key="i"
         cols="12"
         sm="6"

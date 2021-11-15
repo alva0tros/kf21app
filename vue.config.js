@@ -20,5 +20,10 @@ module.exports = {
         }
       }
     }
+  },
+  configureWebpack: {
+    externals: {
+      'better-sqlite3': 'commonjs better-sqlite3'
+    }
   }
 }

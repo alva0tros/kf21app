@@ -6,7 +6,7 @@
       dark
     >
       <v-app-bar-nav-icon @click="drawer = !drawer" />
-      <v-toolbar-title>{{ $route.name }}</v-toolbar-title>
+      <v-toolbar-title>{{ $route.title }}</v-toolbar-title>
       <v-spacer />
 
       <v-menu offset-y>

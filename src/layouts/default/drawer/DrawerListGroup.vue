@@ -1,6 +1,7 @@
 <template>
   <v-list-group
     :prepend-icon="item.icon"
+    color="#ffffff"
   >
     <template v-slot:activator>
       <v-list-item-content>

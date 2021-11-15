@@ -31,6 +31,7 @@ const routes = [
       {
         path: 'home',
         name: 'Home',
+        title: '메인',
         component: () => import(/* webpackChunkName: "home" */ '@/views/main/Home.vue')
       },
       {
@@ -51,6 +52,11 @@ const routes = [
     beforeEnter: onlyAuthUser,
     children: [
       {
+        path: 'data',
+        name: 'Data',
+        component: () => import(/* webpackChunkName: "com" */ '@/views/com/Data.vue')
+      },
+      {
         path: 'user',
         name: 'User',
         component: () => import(/* webpackChunkName: "com" */ '@/views/com/User.vue')
@@ -59,6 +65,52 @@ const routes = [
         path: 'organization',
         name: 'Organization',
         component: () => import(/* webpackChunkName: "com" */ '@/views/com/Organization.vue')
+      }
+    ]
+  },
+  {
+    path: '/bas',
+    component: () => import(/* webpackChunkName: "bas" */ '@/layouts/default/Index.vue'),
+    beforeEnter: onlyAuthUser,
+    children: [
+      {
+        path: 'part',
+        name: 'Part',
+        desc: '품목제원',
+        component: () => import(/* webpackChunkName: "bas" */ '@/views/bas/Part.vue')
+      },
+      {
+        path: 'serial',
+        name: 'Serial',
+        desc: '일련번호',
+        component: () => import(/* webpackChunkName: "bas" */ '@/views/bas/Serial.vue')
+      },
+      {
+        path: 'aircraft',
+        name: 'Aircraft',
+        component: () => import(/* webpackChunkName: "bas" */ '@/views/bas/Aircraft.vue')
+      },
+      {
+        path: 'bom',
+        name: 'Bom',
+        component: () => import(/* webpackChunkName: "bas" */ '@/views/bas/Bom.vue')
+      }
+    ]
+  },
+  {
+    path: '/mnt',
+    component: () => import(/* webpackChunkName: "mnt" */ '@/layouts/default/Index.vue'),
+    beforeEnter: onlyAuthUser,
+    children: [
+      {
+        path: 'defect',
+        name: 'Defect',
+        component: () => import(/* webpackChunkName: "mnt" */ '@/views/mnt/Defect.vue')
+      },
+      {
+        path: 'maint',
+        name: 'Maint',
+        component: () => import(/* webpackChunkName: "com" */ '@/views/mnt/Maint.vue')
       }
     ]
   },
