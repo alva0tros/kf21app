@@ -79,7 +79,7 @@ export default {
       search: '',
       headers: [
         { value: 'row_num', text: 'No' },
-        { value: 'table_name', text: '테이블' },
+        { value: 'tbl_name', text: '테이블' },
         { value: 'import_cnt', text: '임포트 건수' },
         { value: 'last_import_date', text: '최근임포트 일시' },
         { value: 'added_cnt', text: '추가된 건수' },
@@ -119,10 +119,16 @@ export default {
       console.log(jsonData)
     },
     dataFind () {
-      const stmt = db.prepare('SELECT user_id, user_name FROM user')
+      const sql = `
+        SELECT row_number() over(order by m.tbl_name) as row_num
+              ,m.tbl_name
+              ,(SELECT count(*) FROM ` + 'com_user' + `) as import_cnt
+          FROM sqlite_master m
+         WHERE m.type = 'table'
+      `
+      const stmt = db.prepare(sql)
       const rows = stmt.all()
       this.items = rows
-      console.log(rows)
     },
     dataSave () {
       console.log('Save')
