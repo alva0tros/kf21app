@@ -35,7 +35,7 @@
         <v-spacer />
         <v-btn
           color="error"
-          @click="dataSave()"
+          @click="dataInit()"
         >
           <v-icon class="pr-2">
             mdi-refresh
@@ -67,8 +67,11 @@
 <script>
 
 import { dialog } from '@electron/remote'
-import fs from 'fs'
+// import fs from 'fs'
+// import path from 'path'
 import { db } from '@/utils/db'
+import init from '@/utils/sql/init'
+import xlsx from 'xlsx'
 
 export default {
   data () {
@@ -86,19 +89,34 @@ export default {
     }
   },
   methods: {
+    dataInit () {
+      init.run()
+    },
     fileImport () {
       const options = {
         filters: [
           {
-            name: 'excel worksheet',
-            extensions: ['xlsx', 'xls']
+            name: 'Excel Worksheet',
+            extensions: ['xlsx']
           }
         ]
       }
       const rf = dialog.showOpenDialogSync(options)
       if (!rf) return
-      const text = fs.readFileSync(rf[0]).toString()
-      console.log(text)
+      // const text = fs.readFileSync(rf[0]).toString()
+      // console.log(rf[0])
+      // const fileName = fs.readFileSync(rf[0])
+
+      // const file = path.join(rf[0], fileName)
+      const xlsxFile = xlsx.readFile(rf[0])
+      const sheetName = xlsxFile.SheetNames[0]
+      const firstSheet = xlsxFile.Sheets[sheetName]
+
+      const jsonData = xlsx.utils.sheet_to_json(firstSheet, { defval: '' })
+
+      console.log(sheetName)
+      console.log(firstSheet)
+      console.log(jsonData)
     },
     dataFind () {
       const stmt = db.prepare('SELECT user_id, user_name FROM user')

@@ -69,12 +69,14 @@
           </v-card-text>
           <v-card-actions>
             <v-btn @click="test">
-                  TEST
-                </v-btn>
-                <v-btn @click="read"> READ
-                </v-btn>
-                <v-btn @click="write"> WRITE
-                </v-btn>
+              TEST
+            </v-btn>
+            <v-btn @click="read">
+              READ
+            </v-btn>
+            <v-btn @click="write">
+              WRITE
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
