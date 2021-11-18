@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3'
 
-export const db = new Database('./src/utils/data.db', { verbose: console.log })
+export const db = new Database('./src/dao/db/data.db', { verbose: console.log })
 
 // const sqlite3 = require('sqlite3').verbose()
 
