@@ -44,7 +44,7 @@
         </v-btn>
         <v-btn
           color="primary"
-          @click="fileImport()"
+          @click="dataImport()"
         >
           <v-icon class="pr-2">
             mdi-database-import
@@ -84,32 +84,17 @@ export default {
   },
   methods: {
     dataInit () {
-      data.init()
+      data.dataInit()
     },
-    fileImport () {
-      data.import()
+    async dataImport () {
+      await data.dataImport()
+      this.dataFind()
     },
     dataFind () {
-      this.items = data.find()
+      this.items = data.dataFind()
     },
     dataSave () {
-      // const insert = db.prepare('INSERT INTO langs VALUES ($lang )')
-      // const insertMany = db.transaction((data) => {
-      //   for (const obj of data) insert.run(obj)
-      // })
 
-      // insertMany([
-      //   { lang: 'C' },
-      //   { lang: 'JAVA' },
-      //   { lang: 'PYTHON' },
-      //   { lang: 'PYTHON' },
-      //   { lang: 'PYTHON' },
-      //   { lang: 'PYTHON' },
-      //   { lang: 'PYTHON' },
-      //   { lang: 'PYTHON' },
-      //   { lang: 'PYTHON' },
-      //   { lang: 'PYTHON' }
-      // ])
     }
   }
 }
