@@ -1,7 +1,8 @@
 import { db } from '@/dao/db/db'
 import { dialog } from '@electron/remote'
 import fs from 'fs'
-import csv from 'csv-parser'
+// import csv from 'csv-parser'
+import { parse } from 'fast-csv'
 
 const dataInit = () => {
   const tblObj = {}
@@ -13,19 +14,23 @@ const dataInit = () => {
   tblObj.org = comOrg
 
   if (!tblObj.user.cnt) {
-    const sql = `CREATE TABLE IF NOT EXISTS com_user (
-                              id INTEGER PRIMARY KEY AUTOINCREMENT,
-                              user_id TEXT,
-                              user_name TEXT,
-                              import_date DATETIME DEFAULT (datetime('now', 'localtime')))`
+    const sql = `
+      CREATE TABLE IF NOT EXISTS com_user (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT,
+        user_name TEXT,
+        import_date DATETIME DEFAULT (datetime('now', 'localtime')))
+      `
     db.exec(sql)
   }
   if (!tblObj.org.cnt) {
-    const sql = `CREATE TABLE IF NOT EXISTS com_organization (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      organization_id INTEGER,
-      organization_name TEXT,
-      import_date DATETIME DEFAULT (datetime('now', 'localtime')))`
+    const sql = `
+      CREATE TABLE IF NOT EXISTS com_organization (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        organization_id INTEGER,
+        organization_name TEXT,
+        import_date DATETIME DEFAULT (datetime('now', 'localtime')))
+      `
     db.exec(sql)
   }
 }
@@ -38,7 +43,7 @@ const dataFind = () => {
      WHERE m.type = 'table'
        AND m.tbl_name != 'sqlite_sequence'
      ORDER BY m.tbl_name
-     `
+    `
   const stmt = db.prepare(sql)
   const rows = stmt.all()
   rows.forEach((row, index) => {
@@ -73,21 +78,47 @@ const dataImport = () => {
     const rf = dialog.showOpenDialogSync(options)
     if (!rf) return
 
+    // const [resUser, resOrg] = [[], []]
     const result = []
     const stream = fs.createReadStream(rf[0])
-    stream.pipe(csv())
+
+    stream.pipe(parse({ headers: false }))
       .on('data', (data) => {
         result.push(data)
+        console.log(data[1])
+        // switch (data.table_name) {
+        //   case 'com_user':
+        //     if (data.index === '0') console.log('header1')
+        //     resUser.push(data)
+        //     break
+        //   case 'com_organization':
+        //     if (data.index === '0') console.log('header2')
+        //     resOrg.push(data)
+        //     break
+        // }
       })
       .on('end', () => {
-        const insert = db.prepare(
-            `INSERT INTO com_user(user_id, user_name)
-                  VALUES ($user_id, $user_name)`
-        )
-        const insertMany = db.transaction((data) => {
-          for (const obj of data) insert.run(obj)
-        })
-        insertMany(result)
+        console.log(result)
+        // const insUser = db.prepare(
+        //   `INSERT INTO com_user(user_id, user_name)
+        //         VALUES ($user_id, $user_name)`
+        // )
+        // const insOrg = db.prepare(
+        //   `INSERT INTO com_organization(organization_id, organization_name)
+        //         VALUES ($user_id, $user_name)`
+        // )
+        // const trxUser = db.transaction((data) => {
+        //   for (const obj of data) {
+        //     insUser.run(obj)
+        //   }
+        // })
+        // const trxOrg = db.transaction((data) => {
+        //   for (const obj of data) {
+        //     insOrg.run(obj)
+        //   }
+        // })
+        // trxUser(resUser)
+        // trxOrg(resOrg)
         resolve(retVal)
       })
       .on('error', (error) => {
